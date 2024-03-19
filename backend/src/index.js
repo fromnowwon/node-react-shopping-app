@@ -1,8 +1,11 @@
 const express = require("express");
 const path = require("path"); // 절대 경로 사용 모듈
-
 const app = express();
+const cors = require("cors");
 const port = 4000;
+
+// cors 사용
+app.use(cors());
 
 app.get("/", (req, res) => {
 	res.send("hello!!");
