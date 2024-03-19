@@ -35,6 +35,9 @@ app.post("/", (req, res) => {
 	res.json(req.body);
 });
 
+// /users 요청 시 라우터 동작
+app.use("/users", require("./routes/users"));
+
 // 에러 처리기
 app.use((error, req, res, next) => {
 	res.status(error.status || 500);

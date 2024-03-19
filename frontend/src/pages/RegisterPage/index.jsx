@@ -8,7 +8,8 @@ const RegisterPage = () => {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors, reset },
+		formState: { errors },
+		reset,
 	} = useForm({
 		mode: "onChange",
 	});
