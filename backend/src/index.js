@@ -2,7 +2,20 @@ const express = require("express");
 const path = require("path"); // 절대 경로 사용 모듈
 const app = express();
 const cors = require("cors");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 const port = 4000;
+
+// 환경변수 사용
+dotenv.config();
+
+// mongoose 연결
+mongoose
+	.connect(process.env.MONGO_URI)
+	.then(() => {
+		console.log("연결 완료");
+	})
+	.catch((err) => console.error(err));
 
 // cors 사용
 app.use(cors());
