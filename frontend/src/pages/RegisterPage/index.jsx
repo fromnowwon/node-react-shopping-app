@@ -1,6 +1,10 @@
+import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
+import { registerUser } from "../../store/thunkFunctions";
 
 const RegisterPage = () => {
+	const dispatch = useDispatch();
+
 	const {
 		register,
 		handleSubmit,
@@ -10,7 +14,17 @@ const RegisterPage = () => {
 	});
 
 	// 제출 후 value 초기화
-	const onSubmit = ({ email, password, name }) => {
+	const onSubmit = ({ email, name, password }) => {
+		const body = {
+			email,
+			name,
+			password,
+			image: `https://via.placeholder.com/600x400?text=no+user+image`,
+		};
+
+		// axios.post("/register", body);
+		dispatch(registerUser(body));
+
 		reset();
 	};
 
