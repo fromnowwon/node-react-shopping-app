@@ -23,13 +23,22 @@ app.use(cors());
 // 요청의 본문(body)을 파싱하여 JSON 형식의 데이터로 변환
 app.use(express.json());
 
-app.get("/", (req, res) => {
-	res.send("hello!!");
+app.get("/", (req, res, next) => {
+	// 비동기 코드 에러 처리
+	setImmediate(() => {
+		next(new Error("it is an error"));
+	});
 });
 
 app.post("/", (req, res) => {
 	console.log(req.body);
 	res.json(req.body);
+});
+
+// 에러 처리기
+app.use((error, req, res, next) => {
+	res.status(error.status || 500);
+	res.send(error.message || "Server Error");
 });
 
 // 정적 파일 제공
