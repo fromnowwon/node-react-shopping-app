@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { registerUser } from "./thunkFunctions";
+import { loginUser } from "./thunkFunctions";
 import { toast } from "react-toastify";
 
 const initialState = {
@@ -33,6 +34,24 @@ const userSlice = createSlice({
 			})
 			// registerUser 액션이 rejected 상태일 때
 			.addCase(registerUser.rejected, (state, action) => {
+				state.isLoading = false;
+				state.error = action.payload; // 에러를 상태에 저장
+				toast.error(action.payload);
+			})
+
+			// loginUser 액션이 pending 상태일 때
+			.addCase(loginUser.pending, (state) => {
+				state.isLoading = true;
+			})
+			// loginUser 액션이 fulfilled 상태일 때
+			.addCase(loginUser.fulfilled, (state, action) => {
+				state.isLoading = false;
+				state.userData = action.payload;
+				state.isAuth = true;
+				localStorage.setItem("accessToken", action.payload.accessToken);
+			})
+			// loginUser 액션이 rejected 상태일 때
+			.addCase(loginUser.rejected, (state, action) => {
 				state.isLoading = false;
 				state.error = action.payload; // 에러를 상태에 저장
 				toast.error(action.payload);
