@@ -1,4 +1,5 @@
 const { default: mongoose } = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 // Schema (데이터 구조 정의)
 const userSchema = mongoose.Schema({
@@ -20,6 +21,18 @@ const userSchema = mongoose.Schema({
 		default: 0,
 	},
 	image: String,
+});
+
+userSchema.pre("save", async function (next) {
+	let user = this; // 유저 데이터
+
+	if (user.isModified("password")) {
+		const salt = await bcrypt.genSalt(10);
+		const hash = await bcrypt.hash(user.password, salt);
+		user.password = hash;
+	}
+
+	next(); // 빠져나오기
 });
 
 // Model 생성 (컬렉션의 이름과 그 컬렉션의 스키마를 인자로 받아 새로운 모델 생성)
