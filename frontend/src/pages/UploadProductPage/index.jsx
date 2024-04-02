@@ -46,7 +46,7 @@ const UploadProductPage = () => {
 
 		// const { title, description, price, images, continents } = product;
 		const body = {
-			writer: userData.user._id,
+			writer: userData.id,
 			...product,
 		};
 
