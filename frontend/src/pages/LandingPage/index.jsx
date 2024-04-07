@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import CheckBox from "./sections/CheckBox";
 import RadioBox from "./sections/RadioBox";
 import SearchInput from "./Sections/SearchInput";
 import CardItem from "./Sections/CardItem";
 
 const LandingPage = () => {
+	const limit = 4;
+	const [products, setProducts] = useState([]);
+	const [skip, setSkip] = useState(false);
+	const [filters, setFilters] = useState({
+		continents: [],
+		price: [],
+	});
+
 	return (
 		<section>
 			<div className="text-center m-7">
