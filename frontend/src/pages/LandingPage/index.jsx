@@ -1,17 +1,45 @@
-import React, { useState } from "react";
-import CheckBox from "./sections/CheckBox";
-import RadioBox from "./sections/RadioBox";
+import React, { useEffect, useState } from "react";
+import CheckBox from "./Sections/CheckBox";
+import RadioBox from "./Sections/RadioBox";
 import SearchInput from "./Sections/SearchInput";
 import CardItem from "./Sections/CardItem";
+import axiosInstance from "../../utils/axios";
 
 const LandingPage = () => {
 	const limit = 4;
 	const [products, setProducts] = useState([]);
 	const [skip, setSkip] = useState(false);
+	const [hasMore, setHasMore] = useState(false);
 	const [filters, setFilters] = useState({
 		continents: [],
 		price: [],
 	});
+
+	const fetchProducts = async ({
+		skip,
+		limit,
+		loadMore = false,
+		filters = {},
+		searchTerm = "",
+	}) => {
+		const params = {
+			skip,
+			limit,
+			filters,
+			searchTerm,
+		};
+
+		try {
+			const response = await axiosInstance.get("/products", { params });
+			setProducts(response.data.products);
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	useEffect(() => {
+		fetchProducts({ skip, limit });
+	}, []);
 
 	return (
 		<section>
@@ -33,7 +61,9 @@ const LandingPage = () => {
 			</div>
 			{/* card */}
 			<div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-				<CardItem />
+				{products.map((product) => (
+					<CardItem product={product} key={product.it} />
+				))}
 			</div>
 			{/* load more */}
 			<div className="flex justify-center mt-5">
